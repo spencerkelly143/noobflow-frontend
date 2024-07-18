@@ -59,14 +59,9 @@ if (createAccountBtn === null) {
                 password: password
             }, config)
             .then((response) => {
-                if (response.data.status === "1") {
                 console.log("Success");
                 console.log(response.data);
                 window.location.replace("https://tubeflow.webflow.io/app/dashboard");
-                } else {
-                console.log("Error");
-                console.log(response.data);
-                }
                 console.log(response);
             })
             .catch((error) => {
