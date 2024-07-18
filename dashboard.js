@@ -2,6 +2,8 @@
 import checkAuth from './authorizedPage.js';
 import getSites from './functions/getSites.js';
 import getAccount from './functions/getAccount.js'
+import addLogout from "./functions/addLogout.js"
+
 // import getSiteAccess from './functions/getSiteAccess.js';
 
 let accessToken = checkAuth();
@@ -144,6 +146,10 @@ const site_loader = {
     updateUI: updateUI
 }
 
-document.getElementById("connect-site-0").addEventListener('click', site_loader.connectSite)
-document.getElementById("connect-site-1").addEventListener('click', site_loader.connectSite)
-site_loader.loadSiteData();
+document.addEventListener("DOMContentLoaded", function() {
+    addLogout();
+
+    document.getElementById("connect-site-0").addEventListener('click', site_loader.connectSite)
+    document.getElementById("connect-site-1").addEventListener('click', site_loader.connectSite)
+    site_loader.loadSiteData();
+})

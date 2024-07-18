@@ -1,6 +1,7 @@
 import checkAuth from './authorizedPage.js';
 import getAccount from './functions/getAccount.js';
 import saveAccount from './functions/saveAccount.js';
+import addLogout from './functions/addLogout.js'
 
 let accessToken = checkAuth();
 
@@ -76,12 +77,18 @@ const account_loader = {
     }
 }
 
-document.querySelectorAll("[noob-disable-trigger]").forEach(function(element) {
-    element.addEventListener('click', account_loader.cancelEdit)
-})
 
-document.querySelectorAll("[noob-change-submit]").forEach(function(element) {
-    element.addEventListener('click', account_loader.saveChange)
-})
 
-// account_loader.loadData();
+document.addEventListener("DOMContentLoaded", function() {
+    addLogout();
+
+    document.querySelectorAll("[noob-disable-trigger]").forEach(function(element) {
+        element.addEventListener('click', account_loader.cancelEdit)
+    })
+    
+    document.querySelectorAll("[noob-change-submit]").forEach(function(element) {
+        element.addEventListener('click', account_loader.saveChange)
+    })
+
+    account_loader.loadData();
+})
