@@ -1,6 +1,6 @@
 import "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js";
 import checkAuth from './authorizedPage.js';
-import URI from "./functions/uri.js";
+import uri from "./functions/uri.js";
 // const URI="https://1b1f-2607-9880-1928-2c-00-d7da.ngrok-free.app";
 
 
@@ -11,7 +11,7 @@ async function getURL(){
     // config.headers['authorization'] = "Bearer " + accessToken;
     config.headers['ngrok-skip-browser-warning'] = "69420"
 
-    let res = await axios.get(URI + "/user/getWebflowURL",config)
+    let res = await axios.get(uri + "/user/getWebflowURL",config)
     console.log(res.data)
 
     return res.data.url
@@ -23,7 +23,7 @@ async function installAccessCode(accessToken,code){
     config.headers['authorization'] = "Bearer " + accessToken;
     config.headers['ngrok-skip-browser-warning'] = "69420"
 
-    let res = await axios.post(URI + "/user/installAccessCode",{code: code},config)
+    let res = await axios.post(uri + "/user/installAccessCode",{code: code},config)
     console.log("success")
     console.log(res.data)
 
@@ -44,7 +44,7 @@ async function getSiteAccess(){
             window.location.replace("https://tubeflow.webflow.io/app/dashboard")
         } catch(e){
             console.log(e)
-            // window.location.replace("https://tubeflow.webflow.io/app/failed")
+            window.location.replace("https://tubeflow.webflow.io/app/failed")
         }
     } else {
         console.log("No Code")

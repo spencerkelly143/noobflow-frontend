@@ -1,31 +1,38 @@
 // import 'axios'
 import checkAuth from './authorizedPage.js';
 import getSites from './functions/getSites.js';
+import getAccount from './functions/getAccount.js'
 // import getSiteAccess from './functions/getSiteAccess.js';
 
 let accessToken = checkAuth();
 
 async function loadSiteData(){
     let siteResponse;
+    let accountResponse
     try{
         siteResponse = await getSites(accessToken);
-        if(siteResponse.status == 401){
+        accountResponse = await getAccount(accessToken);
+
+        if(siteResponse.status == 401 && accountResponse.status == 401){
             sessionStorage.removeItem("noobflow-access-token")
-            window.location.replace("https://tubeflow.webflow.io/auth/login?err="+siteResponse.data.msg)
+            // window.location.replace("https://tubeflow.webflow.io/auth/login?err="+siteResponse.data.msg)
         }
     } catch(e){
         console.log("Catch")
         console.log(e)
         sessionStorage.removeItem("noobflow-access-token")
-        window.location.replace("https://tubeflow.webflow.io/auth/login?err="+e)
+        // window.location.replace("https://tubeflow.webflow.io/auth/login?err="+e)
     }
     console.log(siteResponse.data)
-    return siteResponse.data
+    return [siteResponse.data, accountResponse]
 }
 
 
 function updateUI(){
     //Get the grid that contains all site cards
+
+    const header = document.getElementById('header');
+    header.textContent = "Welcome " + this.account_data.firstName + "✌️";
     const site_grid = document.getElementById("site-grid");
 
     //Get Site Card Template
@@ -113,13 +120,18 @@ function updateUI(){
 
 const site_loader = {
     site_arr: [],
+    account_data: {},
     active_site: 0,
     data_loading: false,
     loadSiteData: async function() {
         console.log("loading")
-        let site_res = await loadSiteData();
+        let site_res;
+        let account_res;
+        [site_res,account_res] = await loadSiteData();
         this.site_arr = site_res.site_arr;
         this.account_id = site_res.account_id;
+        this.account_data = account_res.data;
+        console.log(this.account_data)
         this.updateUI()
     },
     connectSite: async function(){

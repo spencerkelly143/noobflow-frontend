@@ -101,6 +101,29 @@ async function loadSiteData(){
 }
 
 function updateUI(){
+    const popup = document.getElementById('popup');
+    const openPopupButton = document.getElementById('openPopupButton');
+    const closeButton = document.querySelector('.close');
+    const copyButton = document.getElementById('copyButton');
+    const scriptCode = document.getElementById('scriptCode');
+
+    closeButton.addEventListener('click', function() {
+        popup.style.display = 'none';
+    });
+
+    copyButton.addEventListener('click', function() {
+        scriptCode.select();
+        scriptCode.setSelectionRange(0, 99999); // For mobile devices
+
+        try {
+            const successful = document.execCommand('copy');
+            const msg = successful ? 'successful' : 'unsuccessful';
+            console.log('Copying text command was ' + msg);
+        } catch (err) {
+            console.error('Oops, unable to copy', err);
+        }
+    });
+
     const tableBody = document.querySelector("tbody");
     const row = tableBody.querySelector("tr");
 
@@ -123,8 +146,10 @@ function updateUI(){
             rowInstance.querySelector("#row-expiry-0").id = "row-expiry-" + ctr;
             rowInstance.querySelector("#row-publish-0").textContent = viewTrackers.frequency;
             rowInstance.querySelector("#row-publish-0").id = "row-publish-"+ctr;
-            rowInstance.querySelector("#row-sync-0").textContent = this.site_json.siteName;
-            rowInstance.querySelector("#row-sync-0").id = "row-sync-" + ctr;
+            rowInstance.querySelector("#get-script-0").addEventListener('click', (e) => setup_loader.getScript(e,popup));
+            rowInstance.querySelector("#get-script-0").id = "get-script-"+ctr;
+            rowInstance.querySelector("#delete-0").addEventListener('click', setup_loader.deleteView);
+            rowInstance.querySelector("#delete-0").id = "delete-" + ctr;
 
             tableBody.appendChild(rowInstance);
             ctr = ctr + 1;
@@ -141,8 +166,8 @@ function updateUI(){
         rowInstance.querySelector("#row-expiry-0").id = "row-expiry-" + ctr;
         rowInstance.querySelector("#row-publish-0").textContent = "";
         rowInstance.querySelector("#row-publish-0").id = "row-publish-"+ctr;
-        rowInstance.querySelector("#row-sync-0").textContent = "";
-        rowInstance.querySelector("#row-sync-0").id = "row-sync-" + ctr;
+        rowInstance.querySelector("#get-script-0").id = "get-script-"+ctr;
+        rowInstance.querySelector("#delete-0").id = "delete-" + ctr;
         tableBody.appendChild(rowInstance);
     }
     const dropdown = document.getElementById("collection-dropdown");
@@ -304,9 +329,19 @@ const setup_loader = {
     },
     addView: async function(){
         let res = await addView(accessToken, setup_loader.site_json.site_id, setup_loader.collection,
-                                     setup_loader.field, setup_loader.duration);
+                                    setup_loader.field, setup_loader.duration);
         console.log(res)
         await setup_loader.loadData()
+    },
+    deleteView: function(ctr){
+        console.log(ctr)
+    },
+    getScript: function(e, popup){
+        let splitIdArray = e.target.parentNode.id.split('-');
+        let idNum = splitIdArray[splitIdArray.length-1];
+        let view_json = setup_loader.site_json.views[idNum]
+        document.getElementById('scriptCode').textContent = "<script src='fjdsflks/fdsaf?site_id=" + this.site_json.site_id+ "&field_id=" + view_json.field.id + "&collection_id=" +view_json.collection.id +"' ></script>";
+        popup.style.display = 'flex';
     }
 }
 
@@ -319,4 +354,10 @@ document.getElementById("field-dropdown").addEventListener('change', setup_loade
 document.getElementById("duration-dropdown").addEventListener('change', setup_loader.handleDurationChange)
 
 document.getElementById("save-button").addEventListener('click', setup_loader.addView)
+window.addEventListener('click', function(event) {
+    if (event.target === popup) {
+        popup.style.display = 'none';
+    }
+});
+
 setup_loader.loadData();

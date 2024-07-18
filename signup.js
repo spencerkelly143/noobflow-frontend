@@ -1,5 +1,6 @@
 import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
-
+import "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js";
+import URI from './functions/uri.js';
 import app from './firebaseApp.js'
 
 const auth = getAuth(app);
@@ -51,7 +52,7 @@ if (createAccountBtn === null) {
 
             sessionStorage.setItem("noobflow-access-token", user.accessToken)
             axios
-            .post("https://1b1f-2607-9880-1928-2c-00-d7da.ngrok-free.app/user/addAccount", {
+            .post(URI + "/user/addAccount", {
                 firstName: firstName,
                 lastName: lastName,
                 email: email,
