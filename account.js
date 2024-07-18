@@ -58,6 +58,7 @@ const account_loader = {
         console.log("loading")
         this.data_loading = true
         this.account_data = await loadAccountData();
+        console.log(this.account_data)
         this.data_loading = false
         this.updateUI()
     },
