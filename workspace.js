@@ -67,8 +67,8 @@ function updateUI(){
     document.getElementById("page-views").textContent = this.site_data["currentMonthlySiteViews"]
     document.getElementById("title").textContent = this.site_data["siteName"]
     document.getElementById("setup-button").addEventListener('click', () => window.location = "https://tubeflow.webflow.io/app/setup?site_id="+this.site_data.site_id)
-    document.getElementById("last-payment-date").textContent = displayDate(this.invoice.created);
-    document.getElementById("last-payment-amount").textContent = formatPrice(this.invoice.amount_paid/100);
+    document.getElementById("last-payment-date").textContent = this.invoice === null ? "No Payment" : displayDate(this.invoice.created);
+    document.getElementById("last-payment-amount").textContent = this.invoice === null ? "No Payment" : formatPrice(this.invoice.amount_paid/100);
     let e = document.getElementById("upgrade-views");
     let d = document.createElement('stripe-buy-button');
     d.innerHTML = e.innerHTML;
