@@ -3,6 +3,7 @@ import checkAuth from './authorizedPage.js';
 import getSites from './functions/getSites.js';
 import getAccount from './functions/getAccount.js'
 import addLogout from "./functions/addLogout.js"
+import {showLoadingScreen, hideLoadingScreen} from './loadFunctions/loadFunctions.js';
 
 // import getSiteAccess from './functions/getSiteAccess.js';
 
@@ -17,13 +18,13 @@ async function loadSiteData(){
 
         if(siteResponse.status == 401 && accountResponse.status == 401){
             sessionStorage.removeItem("noobflow-access-token")
-            // window.location.replace("https://tubeflow.webflow.io/auth/login?err="+siteResponse.data.msg)
+            window.location.replace("https://tubeflow.webflow.io/auth/login?err="+siteResponse.data.msg)
         }
     } catch(e){
         console.log("Catch")
         console.log(e)
         sessionStorage.removeItem("noobflow-access-token")
-        // window.location.replace("https://tubeflow.webflow.io/auth/login?err="+e)
+        window.location.replace("https://tubeflow.webflow.io/auth/login?err="+e)
     }
     console.log(siteResponse.data)
     return [siteResponse.data, accountResponse]
