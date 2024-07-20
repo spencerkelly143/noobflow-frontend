@@ -130,8 +130,11 @@ const site_loader = {
     account_data: {},
     active_site: 0,
     data_loading: false,
+    loadingScreen: document.querySelector('#loading-wrapper'),
+    content: document.querySelector('.main-wrapper'),
     loadSiteData: async function() {
         console.log("loading")
+        this.showLoadingScreen(this.loadingScreen,this.content)
         let site_res;
         let account_res;
         [site_res,account_res] = await loadSiteData();
@@ -139,6 +142,9 @@ const site_loader = {
         this.account_id = site_res.account_id;
         this.account_data = account_res.data;
         console.log(this.account_data)
+        
+        this.hideLoadingScreen(this.loadingScreen,this.content)
+
         this.updateUI()
     },
     connectSite: async function(){
@@ -148,6 +154,10 @@ const site_loader = {
         // console.log("zoinkees")
         // site_loader.loadSiteData();
     },
+    showLoadingScreen: showLoadingScreen,
+  
+      // Function to hide the loading screen
+    hideLoadingScreen: hideLoadingScreen,
     updateUI: updateUI
 }
 
