@@ -1,12 +1,16 @@
-import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+import { getAuth, createUserWithEmailAndPassword,GoogleAuthProvider,signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
 import "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js";
-import URI from './functions/uri.js';
+import uri from './functions/uri.js';
 import app from './firebaseApp.js'
 
 const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider()
 
 
 const createAccountBtn = document.getElementById("submitSignUp");
+const googleSignInBtn= document.getElementById("google-sign-in")
+const facebookSignInBtn = document.getElementById("facebook-sign-in");
+
 if (createAccountBtn === null) {
     console.log("No Create Account button found");
 } else {
@@ -75,3 +79,37 @@ if (createAccountBtn === null) {
         });
     });
 }
+
+googleSignInBtn.addEventListener("click",() => {
+    signInWithPopup(auth, googleProvider)
+        .then((result) => {
+            console.log(result)
+            const user = result.user;
+
+            let config = {headers: {}};
+
+            config.headers['Access-Control-Allow-Origin'] = '*'
+            config.headers['authorization'] = "Bearer " + user.accessToken;
+
+            const firstSpaceIndex = result.user.displayName.indexOf(' ');
+
+            axios.post(uri + "/user/addAccount", {
+                firstName: result.user.displayName.substring(0,firstSpaceIndex),
+                lastName: result.user.displayName.substring(firstSpaceIndex+1),
+                email: result.user.email
+                }, config)
+                .then((response) => {
+                    console.log(response)
+                    if (response.status === 200) {
+                    console.log("Success");
+                    console.log(response.data);
+                    sessionStorage.setItem("noobflow-access-token", user.accessToken);
+                    window.location.replace("https://tubeflow.webflow.io/app/dashboard");
+                    } else {
+                    console.log("Error");
+                    console.log(response.data);
+                    }
+                    console.log(response);
+                })
+        })
+})

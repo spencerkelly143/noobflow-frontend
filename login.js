@@ -97,13 +97,8 @@ googleSignInbtn.addEventListener('click', () =>{
   signInWithPopup(auth, googleProvider)
   .then((result) => {
     console.log(result)
-    // The signed-in user info.
     const user = result.user;
-
-    // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const accessToken = credential.accessToken;
-
+    
     let config = {headers: {}};
     config.headers['Access-Control-Allow-Origin'] = '*'
     config.headers['authorization'] = "Bearer " + user.accessToken;

@@ -4,7 +4,9 @@ import getSites from './functions/getSites.js';
 import getAccount from './functions/getAccount.js';
 import getCustomerSession from './functions/getCustomerSession.js';
 import formatPrice from './functions/formatPrice.js';
+import {showLoadingScreen, hideLoadingScreen} from './loadFunctions/loadFunctions.js';
 import "https://js.stripe.com/v3/buy-button.js";
+
 // import getSiteAccess from './functions/getSiteAccess.js';
 
 let accessToken = checkAuth();
@@ -66,9 +68,12 @@ function updateUI(){
     document.getElementById("dashboard-progress-fill").style.width = 100*this.site_data["currentMonthlySiteViews"]/500000 +'%'
     document.getElementById("page-views").textContent = this.site_data["currentMonthlySiteViews"]
     document.getElementById("title").textContent = this.site_data["siteName"]
+    document.getElementById("plan-title").textContent = this.site_data["planLevel"]
     document.getElementById("setup-button").addEventListener('click', () => window.location = "https://tubeflow.webflow.io/app/setup?site_id="+this.site_data.site_id)
     document.getElementById("last-payment-date").textContent = this.invoice === null ? "No Payment" : displayDate(this.invoice.created);
     document.getElementById("last-payment-amount").textContent = this.invoice === null ? "No Payment" : formatPrice(this.invoice.amount_paid/100);
+    document.getElementById("next-payment-date").textContent = this.invoice === null ? "No Payment" : displayDate(this.invoice.created);
+    document.getElementById("next-payment-amount").textContent = this.invoice === null ? "No Payment" : formatPrice(this.invoice.amount_paid/100);
     let e = document.getElementById("upgrade-views");
     let d = document.createElement('stripe-buy-button');
     d.innerHTML = e.innerHTML;
@@ -88,8 +93,11 @@ const workspace_loader = {
     stripe_client_secret: '',
     active_site: 0,
     data_loading: false,
+    loadingScreen: document.querySelector('#loading-wrapper'),
+    content: document.querySelector('.main-wrapper'),
     loadSiteData: async function() {
         console.log("loading")
+        this.showLoadingScreen()
         let site_res;
         let account_res;
         let session_res;
@@ -116,7 +124,13 @@ const workspace_loader = {
         this.site_data = site_arr[0];
         this.account_id = site_res.account_id;
         this.updateUI()
+        this.hideLoadingScreen()
     },
+
+    showLoadingScreen: showLoadingScreen,
+  
+      // Function to hide the loading screen
+    hideLoadingScreen: hideLoadingScreen,
 
     updateUI: updateUI
 }
