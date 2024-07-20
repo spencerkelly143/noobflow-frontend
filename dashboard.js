@@ -33,6 +33,10 @@ async function loadSiteData(){
 function updateUI(){
     //Get the grid that contains all site cards
 
+    const noSitesBanner = document.getElementById('noSitesConnected');
+    if (this.site_arr.length >0){
+        noSitesBanner.style.display = 'none';
+    }
     const header = document.getElementById('header');
     header.textContent = "Welcome " + this.account_data.firstName + "✌️";
     const site_grid = document.getElementById("site-grid");
