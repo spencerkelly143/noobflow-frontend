@@ -56,7 +56,7 @@ if (createAccountBtn === null) {
 
             sessionStorage.setItem("noobflow-access-token", user.accessToken)
             axios
-            .post(URI + "/user/addAccount", {
+            .post(uri + "/user/addAccount", {
                 firstName: firstName,
                 lastName: lastName,
                 email: email,

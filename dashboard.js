@@ -1,5 +1,4 @@
 // import 'axios'
-console.log("fdsa")
 import checkAuth from './authorizedPage.js';
 import getSites from './functions/getSites.js';
 import getAccount from './functions/getAccount.js'
