@@ -1,5 +1,6 @@
+console.log("fadsf")
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js'
-
+console.log(initializeApp)
 const firebaseConfig = {
   apiKey: "AIzaSyAz9ZmWsyW3YLo3Cc6Nh26q8jtjPIr5gm4",
   authDomain: "webflow-project-a2141.firebaseapp.com",

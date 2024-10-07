@@ -1,8 +1,9 @@
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth, onAuthStateChanged  } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+import app from '../firebaseApp.js'
 
 
 function addLogout(){
-    const auth = getAuth();
+    const auth = getAuth(app);
 
 
     const collection = document.getElementsByClassName("menu_link is-delete w-inline-block");
