@@ -2,6 +2,8 @@ import { getAuth, createUserWithEmailAndPassword,GoogleAuthProvider,signInWithPo
 import "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js";
 import uri from './functions/uri.js';
 import app from './firebaseApp.js'
+import setLoadingButton from './functions/setLoadingButton.js'
+import showToast from './functions/showToast.js';
 
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider()
@@ -22,6 +24,7 @@ if (createAccountBtn === null) {
     }
 
     createAccountBtn.addEventListener("click", () => {
+        
         const email = document.getElementById("signUpEmail").value;
         const password = document.getElementById("password").value;
         const firstName = document.getElementById("firstName").value;
@@ -32,14 +35,17 @@ if (createAccountBtn === null) {
         console.log(lastName)
         if (!email || !password || !firstName || !lastName) {
             console.log("A field was missing")
-        return;
+            showToast("A field was missing")
+            return;
         }
     
-        if (email==="" || !password==="" || !firstName==="" || !lastName==="") {
+        if (email==="" || password==="" || firstName==="" || lastName==="") {
             console.log("ENTER VALID VALUES")
-        return;
+            showToast("A field was missing")
+            return;
         }
 
+        setLoadingButton("submitSignUp",true)
         createUserWithEmailAndPassword(
         auth,
         email,
@@ -70,12 +76,16 @@ if (createAccountBtn === null) {
             })
             .catch((error) => {
                 sessionStorage.removeItem("noobflow-access-token")
+                setLoadingButton("submitSignUp",false)
                 console.log(error);
+                showToast(error.message)
             });
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
+            setLoadingButton("submitSignUp",false)
+            showToast(error.message)
             console.log(errorCode, errorMessage);
         });
     });

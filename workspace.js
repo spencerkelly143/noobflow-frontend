@@ -44,25 +44,6 @@ async function loadSiteData(){
 }
 
 function updateUI(){
-    //Get the grid that contains all site cards
-    //Get Site Card Template
-    // let product_card = document.getElementById("dashboard-product-1");
-    // const product_grid = product_card.parentElement
-
-    // if(product_grid===null){
-    //     console.log("No Site Grid")
-    // }
-
-    // //remove all site cards
-    // while (product_grid.firstChild) {
-    //     product_grid.removeChild(product_grid.firstChild);
-    // }
-
-    // let ctr = 1;
-    // let product_card_instance;
-    // document.getElementById("setup-button").href
-    // const site_number = document.getElementById("site-number") 
-    // site_number.textContent = this.site_arr.length;
 
 
     document.getElementById("dashboard-progress-fill").style.width = 100*this.site_data["currentMonthlySiteViews"]/500000 +'%'

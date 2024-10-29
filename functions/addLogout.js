@@ -5,7 +5,7 @@ import app from '../firebaseApp.js'
 function addLogout(){
     const auth = getAuth(app);
 
-
+    console.log("Log out added")
     const collection = document.getElementsByClassName("menu_link is-delete w-inline-block");
     collection[0].addEventListener('click', () => {
 
