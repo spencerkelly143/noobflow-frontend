@@ -6,6 +6,7 @@ import saveAccount from './functions/saveAccount.js';
 import addView from './functions/addView.js';
 import { Timestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js'
 import view from './view.js'
+import URI from "./functions/uri.js";
 
 let accessToken = checkAuth();
 
@@ -340,7 +341,7 @@ const setup_loader = {
         let splitIdArray = e.target.parentNode.id.split('-');
         let idNum = splitIdArray[splitIdArray.length-1];
         let view_json = setup_loader.site_json.views[idNum]
-        document.getElementById('scriptCode').textContent = "<script src='fjdsflks/fdsaf?site_id=" + this.site_json.site_id+ "&field_id=" + view_json.field.id + "&collection_id=" +view_json.collection.id +"' ></script>";
+        document.getElementById('scriptCode').textContent = "<script src='"  + URI+ "?site_id=" + this.site_json.site_id+ "&field_id=" + view_json.field.id + "&collection_id=" +view_json.collection.id +"' ></script>";
         popup.style.display = 'flex';
     }
 }

@@ -69,6 +69,7 @@ if (createAccountBtn === null) {
                 console.log(response);
             })
             .catch((error) => {
+                sessionStorage.removeItem("noobflow-access-token")
                 console.log(error);
             });
         })
